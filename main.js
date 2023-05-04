@@ -1,19 +1,20 @@
 function getAnnuityPayments(loanSum, loanRate, loanTerm) {
-    let result = [];
-    let shareLoanRate = loanRate / 12 / 100;
+    let result = []; // результат двумерный ассоциативный массив
+    let shareLoanRate = loanRate / 12 / 100; // сотая часть от месячной процентной ставки
+    /*Размер ежемясечного платежа*/
     let monthlyPayment = loanSum * (shareLoanRate + shareLoanRate / (Math.pow(1 + shareLoanRate, loanTerm) - 1));
-    let remains = loanSum;
+    let remains = loanSum; // Остаток основного долга
     for(let i = 0; i < loanTerm; i++) {
-        let debtPercent = remains * shareLoanRate;
-        let debt = monthlyPayment - debtPercent;
-        remains -= debt;
+        let debtPercent = remains * shareLoanRate; // Долг по процентам
+        let debt = monthlyPayment - debtPercent; // Основной долг
+        remains -= debt; // Вычисление остатка основного долга
         let resultMonthly = {
             'monthlyPayment': monthlyPayment.toFixed(2),
             'debt': debt.toFixed(2),
             'debtPercent': debtPercent.toFixed(2),
             'remains': Math.abs(remains.toFixed(2))
         };
-        result.push(resultMonthly);
+        result.push(resultMonthly); // Добавление в результат данные за один месяц
     }
     return result;
 }
